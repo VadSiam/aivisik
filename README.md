@@ -8,7 +8,7 @@
 $ npm install
 ```
 
-add .env file - check example_env
+add .env file - check .example_env file
 
 ## Running the app
 
