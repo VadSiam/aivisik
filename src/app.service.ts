@@ -112,8 +112,8 @@ export class AppService {
     }
   }
 
-  // @Cron('0 */8 * * * *') // run every 8 hours
-  @Cron('0 * * * * *') // run every 1 minute
+  // @Cron('0 * * * * *') // run every 1 minute
+  @Cron('0 */8 * * * *') // run every 8 hours
   handleCron() {
     this.getAIImageAndPostToInsta();
   }
