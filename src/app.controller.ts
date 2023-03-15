@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  // @Get()
   // getImage() {
   //   return this.appService.getOpenAIImage();
   // }
@@ -18,9 +18,10 @@ export class AppController {
   // getFB() {
   //   return this.appService.getFBCall();
   // }
-  getAndDownloadImage() {
-    return this.appService.getAIImage();
-  }
+  // MAIN FUNCTION
+  // getAndDownloadImage() {
+  //   return this.appService.getAIImageAndPostToInsta();
+  // }
 
   // getHumanityStats() {
   //   return this.appService.getHumanityStats();
