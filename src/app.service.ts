@@ -7,6 +7,7 @@ import { getStats } from './api/worldometers';
 import { getGGLTrends } from './api/ggltrends';
 import { getHumanityStats } from './api/visionofhumanity';
 import { postAtInstagram } from './api/fb';
+import { Cron } from '@nestjs/schedule';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
@@ -94,7 +95,7 @@ export class AppService {
     };
   }
 
-  async getAIImage() {
+  async getAIImageAndPostToInsta() {
     function swopWhitespaceToUnderscore(str: string) {
       return str.replace(/\s+/g, '_');
     }
@@ -109,5 +110,11 @@ export class AppService {
     } catch (error) {
       console.log('getOpenAIImage Error: ', error);
     }
+  }
+
+  // @Cron('0 * * * * *') // run every 1 minute
+  @Cron('0 */8 * * * *') // run every 8 hours
+  handleCron() {
+    this.getAIImageAndPostToInsta();
   }
 }
