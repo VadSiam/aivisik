@@ -57,7 +57,7 @@ export class AppService {
       const [imgUrl, imgName] = await responseOpenAI({
         strPrompt,
         imgNumber: 1,
-        imgSize: CreateImageRequestSizeEnum._512x512,
+        imgSize: CreateImageRequestSizeEnum._1024x1024,
       });
       console.log('🚀 ~ file: app.service.ts:37 ~ imgUrl:', imgUrl);
       if (!imgUrl) {
@@ -126,7 +126,7 @@ export class AppService {
       const { title, subtitle, country } = await this.getFoodForAI();
       const strPrompt = `${title}. ${subtitle}`;
       const imgUrl = await this.getOpenAIImage(strPrompt);
-      const tags = `#${swopWhitespaceToUnderscore(
+      const tags = `#DALL-E2#${swopWhitespaceToUnderscore(
         country,
       )}#${swopWhitespaceToUnderscore(title)} ${strPrompt}`;
       await postAtInstagram(imgUrl as string, tags);
