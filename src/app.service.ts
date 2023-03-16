@@ -4,10 +4,10 @@ import { CreateImageRequestSizeEnum } from 'openai';
 import * as fs from 'fs';
 import { responseOpenAI } from './api/openai';
 import { getStats } from './api/worldometers';
-import { getGGLTrends } from './api/ggltrends';
 import { getHumanityStats } from './api/visionofhumanity';
 import { postAtInstagram } from './api/fb';
 import { Cron } from '@nestjs/schedule';
+import { fetchTrendingSearches } from './api/ggltrends_second';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
@@ -22,6 +22,29 @@ export interface ITrend {
   published: string;
   searches: string;
   thumbnail: string;
+}
+
+export interface IParseTrend {
+  title: {
+    query: string;
+    exploreLink: string;
+  };
+  formattedTraffic: string;
+  image: {
+    newsUrl: string;
+    source: string;
+    imageUrl: string;
+  };
+  articles: [
+    {
+      title: string;
+      timeAgo: string;
+      source: string;
+      url: string;
+      snippet: string;
+    },
+  ];
+  shareUrl: string;
 }
 
 @Injectable()
@@ -74,9 +97,9 @@ export class AppService {
   }
 
   async getGglTrends(): Promise<[ITrend, string]> {
-    const { dailyResults, randomCountry } = await getGGLTrends();
-    const trendsArray = Object.values(dailyResults?.[0])[0] as [ITrend];
-    return [trendsArray?.[0] as ITrend, randomCountry];
+    const { dailyResults, randomCountry } = await fetchTrendingSearches();
+    const [trend] = dailyResults;
+    return [trend as ITrend, randomCountry];
   }
 
   async getHumanityStats() {
@@ -101,7 +124,7 @@ export class AppService {
     }
     try {
       const { title, subtitle, country } = await this.getFoodForAI();
-      const strPrompt = `${title}. ${subtitle}}`;
+      const strPrompt = `${title}. ${subtitle}`;
       const imgUrl = await this.getOpenAIImage(strPrompt);
       const tags = `#${swopWhitespaceToUnderscore(
         country,
@@ -112,8 +135,8 @@ export class AppService {
     }
   }
 
-  // @Cron('0 * * * * *') // run every 1 minute
-  @Cron('0 */8 * * * *') // run every 8 hours
+  @Cron('0 * * * * *') // run every 1 minute
+  // @Cron('0 */8 * * * *') // run every 8 hours
   handleCron() {
     this.getAIImageAndPostToInsta();
   }

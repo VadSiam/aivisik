@@ -79,7 +79,7 @@ async function getGGLTrends() {
 
 export { getGGLTrends };
 
-const getRandomCountry = (): [string, string] => {
+export const getRandomCountry = (): [string, string] => {
   const countriesLength = countriesList.length;
   const rndmCountryNumber = Math.floor(Math.random() * countriesLength) + 1;
   const rndmCountry = countriesList[rndmCountryNumber - 1];
