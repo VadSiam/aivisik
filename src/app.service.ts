@@ -135,8 +135,13 @@ export class AppService {
     }
   }
 
-  // @Cron('0 * * * * *') // run every 1 minute
-  @Cron('0 */8 * * * *') // run every 8 hours
+  /*
+    0 0 specifies the seconds and minutes of the cron job to run at.
+  0,8,16 specifies the hours of the cron job to run at, separated by commas.
+  * * * specifies the days of the month, months, and days of the week, respectively. Using * means that the cron job should run every day of the month, every month of the year, and every day of the week.
+  */
+  @Cron('0 0 0,8,16 * * *')
+  // @Cron('0 */8 * * * *') // run every 8 hours
   handleCron() {
     this.getAIImageAndPostToInsta();
   }
