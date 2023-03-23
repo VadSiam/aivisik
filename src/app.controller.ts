@@ -19,11 +19,10 @@ export class AppController {
   //   return this.appService.getFBCall();
   // }
   // MAIN FUNCTION
-  getAndDownloadImage() {
-    return this.appService.handleCron();
-  }
-
-  // getHumanityStats() {
-  //   return this.appService.getHumanityStats();
+  // getAndDownloadImage() {
+  //   return this.appService.handleCron();
   // }
+  getHumanityStats() {
+    return this.appService.getHumanityStats();
+  }
 }
