@@ -6,7 +6,7 @@ import { responseOpenAI } from './api/openai';
 import { getStats } from './api/worldometers';
 import { getHumanityStats } from './api/visionofhumanity';
 import { postAtInstagram } from './api/fb';
-import { Cron } from '@nestjs/schedule';
+// import { Cron } from '@nestjs/schedule';
 import { fetchTrendingSearches } from './api/ggltrends_second';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -140,9 +140,9 @@ export class AppService {
   0,8,16 specifies the hours of the cron job to run at, separated by commas.
   * * * specifies the days of the month, months, and days of the week, respectively. Using * means that the cron job should run every day of the month, every month of the year, and every day of the week.
   */
-  @Cron('0 0 0,8,16 * * *')
-  // @Cron('0 */8 * * * *') // run every 8 hours
-  handleCron() {
-    this.getAIImageAndPostToInsta();
-  }
+  // @Cron('0 0 0,8,16 * * *')
+  // // @Cron('0 */8 * * * *') // run every 8 hours
+  // handleCron() {
+  //   this.getAIImageAndPostToInsta();
+  // }
 }

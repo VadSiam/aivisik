@@ -23,16 +23,22 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Deploy to AWS Lambda function
 
 ```bash
-# unit tests
-$ npm run test
 
-# e2e tests
-$ npm run test:e2e
+$ npm run build
+# it will create 'dist' dir with full build
 
-# test coverage
-$ npm run test:cov
+# move to 'dist' dir file 'package copy.json' and change name to 'package.json'
+# then 
+$ cd dist && npm i
+
+# make .zip file from 'dist' dir
+# upload to AWS lambda function via AWS dashboard this .zip file
+# change the path to lambda 'handler' function in AWS dashboard - 'your func page -> Code -> Runtime settings -> Edit -> in "Handler" field change to "dist/lambda.handlerFunc" -> save'
+# in same function page add all env vars from .env file
+# in AWS lambda func add trigger by time (Cron) - "EventBridge (CloudWatch Events)
+# in AWS func dashboard run test - should work
 ```
 
