@@ -8,6 +8,7 @@ import { getHumanityStats } from './api/visionofhumanity';
 import { postAtInstagram } from './api/fb';
 // import { Cron } from '@nestjs/schedule';
 import { fetchTrendingSearches } from './api/ggltrends_second';
+import { runMidjourney } from './api/midjourney';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
@@ -103,8 +104,9 @@ export class AppService {
   }
 
   async getHumanityStats() {
-    const result = await getHumanityStats();
-    console.log('🚀 ~ file: app.service.ts:59 ~ result', result);
+    // const result = await getHumanityStats();
+    // console.log('🚀 ~ file: app.service.ts:59 ~ result', result);
+    await runMidjourney('Кибальчиш в гостях у сказки');
   }
 
   async getFoodForAI() {

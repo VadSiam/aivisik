@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateImageRequestSizeEnum } from 'openai';
 import { postAtInstagram } from 'src/api/fb';
 import { fetchTrendingSearches } from 'src/api/ggltrends_second';
+import { runMidjourney } from 'src/api/midjourney';
 import { responseOpenAI } from 'src/api/openai';
 import { ITrend } from 'src/app.service';
 
@@ -12,7 +13,6 @@ export class CronService {
     try {
       await this.getAIImageAndPostToInsta();
       return 'Success';
-      return;
     } catch (error) {
       console.log('lambdaFunction -> getAIImageAndPostToInsta, error:', error);
     }
@@ -30,6 +30,12 @@ export class CronService {
         country,
       )}#${swopWhitespaceToUnderscore(title)} ${strPrompt}`;
       await postAtInstagram(imgUrl as string, tags);
+
+      const imgUrlMJ = await this.getMidjourneyImage(strPrompt);
+      const tagsMJ = `#Midjourney#${swopWhitespaceToUnderscore(
+        country,
+      )}#${swopWhitespaceToUnderscore(title)} ${strPrompt}`;
+      await postAtInstagram(imgUrlMJ as string, tagsMJ);
     } catch (error) {
       console.log('getOpenAIImage Error: ', error);
     }
@@ -52,10 +58,15 @@ export class CronService {
     return [trend as ITrend, randomCountry];
   }
 
+  async getMidjourneyImage(strPrompt: string) {
+    const imgUrl = await runMidjourney(strPrompt);
+    return imgUrl;
+  }
+
   async getOpenAIImage(strPrompt: string) {
     let attempt = 1;
     while (attempt <= 5) {
-      const [imgUrl, imgName] = await responseOpenAI({
+      const [imgUrl] = await responseOpenAI({
         strPrompt,
         imgNumber: 1,
         imgSize: CreateImageRequestSizeEnum._1024x1024,
