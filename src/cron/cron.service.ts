@@ -24,7 +24,8 @@ export class CronService {
     }
     try {
       const { title, subtitle, country } = await this.getFoodForAI();
-      const strPrompt = `${title}. ${subtitle} style cyberpunk`;
+      // const strPrompt = `${title}. ${subtitle} style cyberpunk`;
+      const strPrompt = `${title}. ${subtitle} style steampunk`;
       const imgUrl = await this.getOpenAIImage(strPrompt);
       const tags = `#DALL-E2#Cyberpunk#${swopWhitespaceToUnderscore(
         country,
@@ -41,12 +42,17 @@ export class CronService {
     }
   }
 
+  replaceSymbols(str: string) {
+    return str.replace(/&#39;|&nbsp;/g, ' ');
+  }
+
   async getFoodForAI() {
     const [trend, country] = await this.getGglTrends();
     const { title, subtitle, thumbnail } = trend;
+    const outputStr = this.replaceSymbols(subtitle);
     return {
       title,
-      subtitle,
+      subtitle: outputStr,
       thumbnail,
       country,
     };
