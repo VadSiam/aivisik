@@ -25,15 +25,15 @@ export class CronService {
     try {
       const { title, subtitle, country } = await this.getFoodForAI();
       // const strPrompt = `${title}. ${subtitle} style cyberpunk`;
-      const strPrompt = `${title}. ${subtitle} style steampunk`;
+      const strPrompt = `${title}. ${subtitle} style post-apocalyptic`;
       const imgUrl = await this.getOpenAIImage(strPrompt);
-      const tags = `#DALL-E2#Cyberpunk#${swopWhitespaceToUnderscore(
+      const tags = `#DALL-E2#Post-apocalyptic#${swopWhitespaceToUnderscore(
         country,
       )}#${swopWhitespaceToUnderscore(title)} ${strPrompt}`;
       await postAtInstagram(imgUrl as string, tags);
 
       const imgUrlMJ = await this.getMidjourneyImage(strPrompt);
-      const tagsMJ = `#Midjourney#Cyberpunk#${swopWhitespaceToUnderscore(
+      const tagsMJ = `#Midjourney#Post-apocalyptic#${swopWhitespaceToUnderscore(
         country,
       )}#${swopWhitespaceToUnderscore(title)} ${strPrompt}`;
       await postAtInstagram(imgUrlMJ as string, tagsMJ);
@@ -43,7 +43,7 @@ export class CronService {
   }
 
   replaceSymbols(str: string) {
-    return str.replace(/&#39;|&nbsp;/g, ' ');
+    return str.replace(/&#39;|&nbsp;|&quot;/g, ' ');
   }
 
   async getFoodForAI() {
