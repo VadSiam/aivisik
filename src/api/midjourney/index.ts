@@ -105,9 +105,9 @@ const generateNewMJPrompt = async (
     type: 2,
     application_id: applicationID,
     channel_id: dmChannelId,
-    session_id: '8d7f5f239ea50fcd2cd07515b2245d2c',
+    session_id: 'b9653ac4d031b88c1a1bd6920735dba6',
     data: {
-      version: '1077969938624553050',
+      version: '1118961510123847772',
       id: commandID,
       name: 'imagine',
       type: 1,
@@ -121,7 +121,7 @@ const generateNewMJPrompt = async (
       application_command: {
         id: commandID,
         application_id: applicationID,
-        version: '1077969938624553050',
+        version: '1118961510123847772',
         default_permission: true,
         default_member_permissions: null,
         type: 1,
@@ -140,7 +140,7 @@ const generateNewMJPrompt = async (
       },
       attachments: [],
     },
-    nonce: '1092767920863313920',
+    nonce: '1120230447008186368',
   };
 
   try {
