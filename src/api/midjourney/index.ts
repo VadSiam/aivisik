@@ -68,6 +68,10 @@ const generateSingleMJPrompt = async ({
   uuid,
   messageId,
 }): Promise<string | null> => {
+  const getRandomInt = () => {
+    return Math.floor(Math.random() * 4) + 1;
+  };
+  const randomNumber1to4 = getRandomInt();
   const sendInteractionUrl = `https://discord.com/api/v9/interactions`;
   const headers = {
     Authorization: process.env.DISCORD_USER_TOKEN,
@@ -75,16 +79,16 @@ const generateSingleMJPrompt = async ({
   };
   const interaction = {
     type: 3,
-    nonce: '1093096782868512768',
+    nonce: '1130704988863987712',
     guild_id: null,
     channel_id: '1092399713757708378',
     message_flags: 0,
     message_id: messageId,
     application_id: '936929561302675456',
-    session_id: '041284822e71aec2e9791de1cd681107',
+    session_id: 'a20dcec18e39febbd9000691af71e089',
     data: {
       component_type: 2,
-      custom_id: `MJ::JOB::upsample::1::${uuid}`,
+      custom_id: `MJ::JOB::upsample::${randomNumber1to4}::${uuid}`,
     },
   };
 

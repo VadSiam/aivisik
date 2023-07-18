@@ -25,15 +25,15 @@ export class CronService {
     try {
       const { title, subtitle, country } = await this.getFoodForAI();
       // const strPrompt = `${title}. ${subtitle} style cyberpunk`;
-      const strPrompt = `${title}. ${subtitle} style post-apocalyptic`;
+      const strPrompt = `${title}. ${subtitle} style cyberpunk`;
       const imgUrl = await this.getOpenAIImage(strPrompt);
-      const tags = `#DALL-E2#Post-apocalyptic#${swopWhitespaceToUnderscore(
+      const tags = `#DALL-E2#Cyberpunk#${swopWhitespaceToUnderscore(
         country,
       )}#${swopWhitespaceToUnderscore(title)} ${strPrompt}`;
       await postAtInstagram(imgUrl as string, tags);
 
       const imgUrlMJ = await this.getMidjourneyImage(strPrompt);
-      const tagsMJ = `#Midjourney#Post-apocalyptic#${swopWhitespaceToUnderscore(
+      const tagsMJ = `#Midjourney#Cyberpunk#${swopWhitespaceToUnderscore(
         country,
       )}#${swopWhitespaceToUnderscore(title)} ${strPrompt}`;
       await postAtInstagram(imgUrlMJ as string, tagsMJ);
