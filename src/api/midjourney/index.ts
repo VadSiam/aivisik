@@ -17,7 +17,11 @@ const delayedMJCheckMessage = async (
         }, 60000), // 60 sec
     );
 
-    if (success && !success.content.includes('Waiting to start')) {
+    if (
+      success &&
+      !success.content.includes('Waiting to start') &&
+      !success.attachments?.[0]?.url.includes('webp')
+    ) {
       console.log('🚀 ~ file: midjourney.ts:115 ~ success:', success);
       console.log('Check MJ message function succeeded');
       return success;
