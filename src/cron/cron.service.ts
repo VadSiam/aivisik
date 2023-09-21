@@ -3,7 +3,7 @@ import { CreateImageRequestSizeEnum } from 'openai';
 import { postAtInstagram } from 'src/api/fb';
 import { fetchTrendingSearches } from 'src/api/ggltrends_second';
 import { runMidjourney } from 'src/api/midjourney';
-import { responseOpenAI } from 'src/api/openai';
+import { checkPromptWithChatGPT, responseOpenAI } from 'src/api/openai';
 import { ITrend } from 'src/app.service';
 
 @Injectable()
@@ -22,18 +22,31 @@ export class CronService {
     function swopWhitespaceToUnderscore(str: string) {
       return str.replace(/\s+/g, '_');
     }
+    const genres = [
+      'Cyberpunk',
+      'Steampunk',
+      'Post-apocalypse',
+      'Anime cyberpunk',
+      'Anime steampunk',
+      'Anime post-apocalypse',
+    ];
+
+    function getRandomGenre(): string {
+      const randomIndex = Math.floor(Math.random() * genres.length);
+      return genres[randomIndex];
+    }
     try {
       const { title, subtitle, country } = await this.getFoodForAI();
       // const strPrompt = `${title}. ${subtitle} style cyberpunk`;
-      const strPrompt = `${title}. ${subtitle} style cyberpunk`;
+      const strPrompt = `${title}. ${subtitle} style ${getRandomGenre()?.toLowerCase()}`;
       const imgUrl = await this.getOpenAIImage(strPrompt);
-      const tags = `#DALL-E2#Cyberpunk#${swopWhitespaceToUnderscore(
+      const tags = `#DALL-E2#${getRandomGenre()}#${swopWhitespaceToUnderscore(
         country,
       )}#${swopWhitespaceToUnderscore(title)} ${strPrompt}`;
       await postAtInstagram(imgUrl as string, tags);
 
       const imgUrlMJ = await this.getMidjourneyImage(strPrompt);
-      const tagsMJ = `#Midjourney#Cyberpunk#${swopWhitespaceToUnderscore(
+      const tagsMJ = `#Midjourney#${getRandomGenre()}#${swopWhitespaceToUnderscore(
         country,
       )}#${swopWhitespaceToUnderscore(title)} ${strPrompt}`;
       await postAtInstagram(imgUrlMJ as string, tagsMJ);
@@ -70,10 +83,20 @@ export class CronService {
   }
 
   async getOpenAIImage(strPrompt: string) {
+    const { isValid, revisedPrompt } = await checkPromptWithChatGPT(strPrompt);
+    let checkedPrompt = '';
+    if (isValid) {
+      checkedPrompt = strPrompt;
+    } else if (revisedPrompt) {
+      checkedPrompt = revisedPrompt;
+    } else {
+      checkedPrompt = strPrompt;
+    }
+
     let attempt = 1;
     while (attempt <= 5) {
       const [imgUrl] = await responseOpenAI({
-        strPrompt,
+        strPrompt: checkedPrompt,
         imgNumber: 1,
         imgSize: CreateImageRequestSizeEnum._1024x1024,
       });
